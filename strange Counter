@@ -1,0 +1,17 @@
+#include <bits/stdc++.h>
+using namespace std;
+long strangeCounter(long t) {
+    long cycle_start = 1;
+    long cycle_length = 3;
+    while (t > cycle_start + cycle_length - 1) {
+        cycle_start += cycle_length;
+        cycle_length *= 2;
+    }
+    return cycle_length - (t - cycle_start);
+}
+int main() {
+    long t;
+    cin >> t;
+    cout << strangeCounter(t) << "\n";
+    return 0;
+}
