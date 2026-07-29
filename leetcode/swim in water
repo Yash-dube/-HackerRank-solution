@@ -1,0 +1,44 @@
+class Solution {
+public:
+    int swimInWater(vector<vector<int>>& grid) {
+       int n= grid.size();
+           
+            vector<vector<int>>dist(n,vector<int>(n,1e9));
+              using p = pair<int,pair<int,int>>; 
+              
+             priority_queue<p, vector<p>, greater<p>>pq;
+           pq.push({grid[0][0], {0,0}});
+           dist[0][0]=grid[0][0];
+             int drow[]={0,-1,0,1};
+             int dcol[]={-1,0,1,0};
+             while(!pq.empty()){
+                   auto it =pq.top();
+                   pq.pop();
+                   int effort= it.first;
+                   int r=it.second.first;
+                   int c=it.second.second;
+
+                  if (effort > dist[r][c])
+                   continue;
+
+                if (r == n - 1 && c == n - 1)
+                return effort;
+
+                   for(int i=0;i<4;i++){
+                       int nrow = r+ drow[i];
+                       int ncol = c+ dcol[i];
+                        if(nrow>=0 && nrow<n && ncol>=0 && ncol<n ){
+                                                
+ 
+                           int newTime = max(dist[r][c],
+                  grid[nrow][ncol]);
+                             if(newTime<dist[nrow][ncol]){
+                                dist[nrow][ncol] = newTime;
+                            pq.push({newTime,{nrow,ncol}});}
+                        }
+                   }
+             }
+           
+           return 0;
+    }
+};
