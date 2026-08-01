@@ -1,0 +1,67 @@
+class Solution {
+  public:
+  
+     int timer=0;
+     void dfs(int node, vector<int>& vis, int parent, vector<int> adj[], int desc[],
+     int low[], vector<int>&marks){
+         
+           vis[node]=1;
+           desc[node]=low[node]=timer;
+           timer++;
+           int child=0;
+        // We Will  Apply The Tarjan Algorithm  
+
+           for(auto it : adj[node]){
+               
+               if(it==parent) continue;
+               if(!vis[it]){
+                   dfs(it ,vis,node,adj,desc,low,marks);
+                   low[node]= min(low[node],low[it]);
+                   if(low[it]>=desc[node] && parent!=-1){
+                       marks[node]=1;
+                   }
+                   child++;
+                   
+               }
+               else{
+                   low[node]=min(low[node],desc[it]);
+               }
+           }
+       if(child>1 && parent==-1){
+           marks[node]=1;
+       }
+         
+     }
+ 
+    vector<int> articulationPoints(int n, vector<vector<int>>& edges) {
+        
+ vector<int> adj[n];
+for(auto it: edges){
+            int u=it[0];
+            int v=it[1];
+            adj[u].push_back(v);
+            adj[v].push_back(u);
+        }
+        
+        vector<int>vis(n,0);
+        int desc[n];
+        int low[n];
+        vector<int>marks(n,0);
+        for(int i=0;i<n;i++){
+            if(!vis[i]){
+                dfs(i,vis,-1,adj,desc,low,marks);
+            }
+        }
+        
+        vector<int>ans;
+        for(int i=0;i<n;i++){
+            if(marks[i]==1){
+                ans.push_back(i);
+            }
+        }
+        
+        if(ans.size()==0) return {-1};
+        return ans;
+     
+    }
+};
