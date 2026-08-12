@@ -1,0 +1,24 @@
+class Solution {
+  public:
+    int knapSack(vector<int>& val, vector<int>& wt, int w) {
+        // code here
+        int n=wt.size();
+         vector<vector<int>>dp(n,vector<int>(w+1,-1)
+         
+         for(int W=0;W<n;W++){
+             dp[0][W]= ((int)W/wt[0])* val[0];
+         }
+         
+         for(int ind=1;ind<n;ind++){
+             for(int W=0;W<w;W++){
+                 
+                 int nottake=0+dp[ind-1][W];
+                 int take= 0;
+                 if(wt[ind]<=W)  take=val[ind] +dp[ind-1][W-wt[ind]];
+                 
+             }
+             dp[ind][w]=max(take,nottake);
+         }
+        return dp[n-1][w];
+    }
+}; 
