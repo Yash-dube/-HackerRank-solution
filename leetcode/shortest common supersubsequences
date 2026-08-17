@@ -1,0 +1,102 @@
+class Solution {
+public:
+
+    int fun(string &s1, string &s2, int n, int m,
+            vector<vector<int>> &dp) {
+
+        // Base case
+        if (n == s1.size())
+            return s2.size() - m;
+
+        if (m == s2.size())
+            return s1.size() - n;
+
+        // Already calculated
+        if (dp[n][m] != -1)
+            return dp[n][m];
+
+        // Characters are same
+        if (s1[n] == s2[m]) {
+            return dp[n][m] =
+                1 + fun(s1, s2, n + 1, m + 1, dp);
+        }
+
+        // Characters are different
+        return dp[n][m] =
+            1 + min(
+                fun(s1, s2, n + 1, m, dp),
+                fun(s1, s2, n, m + 1, dp)
+            );
+    }
+
+    string shortestCommonSupersequence(string str1, string str2) {
+
+        int n = str1.size();
+        int m = str2.size();
+
+        vector<vector<int>> dp(
+            n + 1,
+            vector<int>(m + 1, -1)
+        );
+
+        // Fill base cases in DP table
+        for (int i = 0; i <= n; i++) {
+            dp[i][m] = n - i;
+        }
+
+        for (int j = 0; j <= m; j++) {
+            dp[n][j] = m - j;
+        }
+
+        // Calculate SCS length
+        fun(str1, str2, 0, 0, dp);
+
+        // Construct SCS
+        string ans = "";
+
+        int i = 0;
+        int j = 0;
+
+        while (i < n && j < m) {
+
+            // Same character
+            if (str1[i] == str2[j]) {
+
+                ans += str1[i];
+
+                i++;
+                j++;
+            }
+
+            // Choose str1
+            else if (dp[i + 1][j] <= dp[i][j + 1]) {
+
+                ans += str1[i];
+
+                i++;
+            }
+
+            // Choose str2
+            else {
+
+                ans += str2[j];
+
+                j++;
+            }
+        }
+
+        // Remaining characters of str1
+        while (i < n) {
+            ans += str1[i];
+            i++;
+        }
+
+        // Remaining characters of str2
+        while (j < m) {
+            ans += str2[j];
+            j++;
+        }
+
+        return ans;
+    }
+};
