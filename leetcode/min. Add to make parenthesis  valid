@@ -1,0 +1,17 @@
+class Solution {
+public:
+    int minAddToMakeValid(string s) {
+          int n=s.size();
+          stack<int>st;
+        for (char c : s) {
+        if (c == ')' && !st.empty() && st.top() == '(') {
+            st.pop(); // Match mil gaya!
+        } else {
+            st.push(c); // Match nahi mila
+        }
+    }
+   
+    return st.size();
+ 
+ }  
+};
